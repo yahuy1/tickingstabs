@@ -40,15 +40,51 @@ export default function App() {
 
 	function handleCharacterInput(event) {
 		let pressed = event.target.value;
+		console.log(pressed);
 		let current = Object.create(isActive);
-		if (current.word === -1) {
-			current.word = 0;
-			current.letter = 0;
+
+		if (pressed === ' ') {
+			if (current.letter === -1) {
+				wordInput.current.value = "";
+				return;
+			}
+
+			current.word++;
+			current.letter = -1;
+
+			let isCorrect = true;
+			words[isActive.word].props.children.forEach((letter) => {
+				if (!isCorrect) return;
+				if (letter.props.className !== "letter correct") {
+					isCorrect = false;
+					return;
+				}
+			});
+
+			console.log(isCorrect);
+			let newWords = [...words];
+			let	key = words[isActive.word].key;
+			let word = words[isActive.word].props.value;
+			newWords[isActive.word] = (
+				<div className={"word" + ((isCorrect) ? " correct" : " error")} value={word} key={key}>
+					{words[isActive.word].props.children}
+				</div>
+			)
+			
+			setWords(newWords);
+			setIsActive(current);
+			wordInput.current.value = "";
+			return;
 		} else {
-			current.letter++;
-			if (current.letter === words[current.word].props.value.length) {
-				current.word++;
+			if (current.word === -1) {
+				current.word = 0;
 				current.letter = 0;
+			} else {
+				current.letter++;
+				if (current.letter === words[current.word].props.value.length) {
+					wordInput.current.value = "";
+					return;
+				}
 			}
 		}
 
@@ -60,8 +96,13 @@ export default function App() {
 			<div className="word" value={word} key={key}>
 				{
 					word.split("").map((letter, j) => {
+						let newClass = words[current.word].props.children[j].props.className;
+						if (j === current.letter) {
+							newClass = "letter" + ((letter === pressed) ? " correct" : " error");
+						} 
+
 						return (
-							<div className={"letter" + ((j === current.letter) ? " active" : (j < current.letter) ? " correct" : "")} key={j}>
+							<div className={newClass} key={j}>
 								{letter}
 							</div>
 						)

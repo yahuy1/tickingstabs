@@ -1,6 +1,7 @@
 $bg-color: #eee;
 $main-color: #444;
 $sub-color: #b2b2b2;
+$error-color: #d70000;
 
 
 #App {
@@ -23,15 +24,27 @@ $sub-color: #b2b2b2;
       font-size: 1.5rem;
       
       .word {
+        line-height: 1em;
+        font-variant: no-common-ligatures;
+        font-size: 1em;
         display: inline-block;
         margin: 6px;
         color: $sub-color;
+        border: 2px solid transparent;
+
+        &.error {
+          border-bottom: $error-color 2px solid;
+        }
 
         .letter {
           display: inline-block;
           
-          &.active, &.correct {
+          &.correct {
             color: $main-color;
+          }
+
+          &.error {
+            color: $error-color;
           }
         }
       }
