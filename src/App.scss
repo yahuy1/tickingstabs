@@ -18,7 +18,7 @@ $sub-color: #b2b2b2;
     }
 
     .wordContainer {
-      background-color: white;
+      background-color: $bg-color;
       height: 117.562px;
       font-size: 1.5rem;
       
@@ -30,7 +30,7 @@ $sub-color: #b2b2b2;
         .letter {
           display: inline-block;
           
-          &.active {
+          &.active, &.correct {
             color: $main-color;
           }
         }
