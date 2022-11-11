@@ -5,6 +5,7 @@ $error-color: #d70000;
 
 
 #App {
+  box-sizing: border-box;
   background-color: $bg-color;
   height: 100vh;
   display: grid;
@@ -28,9 +29,9 @@ $error-color: #d70000;
         font-variant: no-common-ligatures;
         font-size: 1em;
         display: inline-block;
-        margin: 6px;
+        margin: 0.25em;
         color: $sub-color;
-        border: 2px solid transparent;
+        border-bottom: 2px solid transparent;
 
         &.error {
           border-bottom: $error-color 2px solid;
