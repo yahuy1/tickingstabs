@@ -32,6 +32,24 @@ export default function App() {
 	// Call generateText() on load
 	useEffect(() => {generateTest(text)}, []);
 
+	// Check for/Handle the end of the test
+	useEffect(() => {
+		// If there is no test
+		if (words === null) return;
+
+		let lastWord = words.length - 1;
+		let lastLetter = (isActive === words.length) ? null : words[lastWord].props.value.length - 1;
+
+		// Return if not reached the length + 1 null word or the last letter of last word
+		if (isActive.word !== lastWord + 1) {
+			if (isActive.word !== lastWord || isActive.letter != lastLetter) return;
+		}
+
+		alert("Finished");
+		generateTest(text);
+		
+	}, [isActive]);
+
 	// Handle Modifier Keys
 	function handleModifierKeys(event) {
 		let pressed = event.keyCode;
