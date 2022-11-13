@@ -2,8 +2,8 @@ import "./App.scss";
 import {useEffect, useRef, useState} from 'react';
 
 //const text = "If you're visiting this page, you're likely here because you're searching for a random sentence. Sometimes a random word just isn't enough, and that is where the random sentence generator comes into play. By inputting the desired number, you can make a list of as many random sentences as you want or need. Producing random sentences can be helpful in a number of different ways.";
-// const text = "another head into could govern do" // between seem much open so how at say to not life when he some public first seem point move high school into way other ask";
-const text = "this is"
+const text = "another head into could govern do between seem much open so how at say to not life when he some public first seem point move high school into way other ask";
+
 export default function App() {
 	const wordInput = useRef(null); // Reference to the input field
 	const [isActive, setIsActive] = useState({ word: 0, letter: -1}); // Word + Letter currently typing
@@ -34,6 +34,7 @@ export default function App() {
 		setIsActive({word: -1, letter: -1});
 		// Reset test state, prevent calling on mount
 		setCorrectWords(0);
+		setWPM(0);
 		if (testState !== null) setTestState("Not Started");
 	}
 	
@@ -64,15 +65,21 @@ export default function App() {
 		// State changed to Started
 		const interval = setInterval(() => {
 			setTimeElapsed((prevState) => {
-				return prevState + 0.1;
+				return prevState + 0.25;
 			});
-		}, 100);
+		}, 250);
 
 		return () => {
 			clearInterval(interval);
 		};
 
 	}, [testState]);
+
+	useEffect(() => {
+		if (!Number.isInteger(timeElapsed) || timeElapsed === 0) return;
+		let newWPM = Math.round((correctWords / timeElapsed) * 60);
+		setWPM(newWPM);
+	}, [timeElapsed])
 
 	// Check for/Handle the end of the test
 	useEffect(() => {
@@ -279,7 +286,7 @@ export default function App() {
 					<div className="typingTest">
 						<div className="stats">
 							<div>{Math.floor(timeElapsed)}</div>
-							<div>{correctWords}</div>
+							<div>{WPM}</div>
 						</div>
 						<div className="wordContainer">
 							<div className="caret"></div>
