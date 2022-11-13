@@ -7,6 +7,8 @@ export default function App() {
 	const wordInput = useRef(null); // Reference to the input field
 	const [isActive, setIsActive] = useState({ word: 0, letter: -1}); // Word + Letter currently typing
 	const [words, setWords] = useState(null); // Test Text
+	const [testState, setTestState] = useState(null); // State of the test
+	const [timeElapsed, setTimeElapsed] = useState(0); // Time elapsed
 
 	// Generate Test Text
 	function generateTest(text) {
@@ -27,10 +29,40 @@ export default function App() {
 			)
 		}));
 		setIsActive({word: -1, letter: -1});
+		// Reset test state, prevent calling on mount
+		if (testState !== null) setTestState("Not Started");
 	}
 	
 	// Call generateText() on load
 	useEffect(() => {generateTest(text)}, []);
+
+	// Calculate Result
+	function calculateResult() {
+		alert(timeElapsed);
+		generateTest(text);
+	}
+
+	// Timer
+	useEffect(() => {
+		// NOn-Started states handling
+		if (testState !== "Started") {
+			if (testState === "Finished") calculateResult();
+			if (testState === "Not Started") setTimeElapsed(0);
+			return;
+		}
+
+		// State changed to Started
+		const interval = setInterval(() => {
+			setTimeElapsed((prevState) => {
+				return prevState + 1;
+			});
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
+
+	}, [testState]);
 
 	// Check for/Handle the end of the test
 	useEffect(() => {
@@ -42,15 +74,13 @@ export default function App() {
 
 		// Return if not reached the length + 1 null word or the last letter of last word
 		if (isActive.word !== lastWord + 1) {
-			if (isActive.word !== lastWord || isActive.letter != lastLetter) return;
+			if (isActive.word !== lastWord || isActive.letter !== lastLetter) return;
 		}
 
-		alert("Finished");
-		generateTest(text);
-		
+		setTestState("Finished");
 	}, [isActive]);
 
-	// Handle Modifier Keys
+	// Handle Modifier Keys      
 	function handleModifierKeys(event) {
 		let pressed = event.keyCode;
 
@@ -136,7 +166,7 @@ export default function App() {
 		// Space Key
 		if (pressed === ' ') {
 			
-			// Not started on a word yet -> Not starting with space key
+			// Not testState on a word yet -> Not starting with space key
 			if (nextActive.letter === -1) {
 				wordInput.current.value = "";
 				return;
@@ -174,11 +204,12 @@ export default function App() {
 		} else {
 			// Not space key
 			if (nextActive.word === -1) {
-				// If the test has not started
+				// If the test has not testState
+				setTestState("Started");
 				nextActive.word = 0;
 				nextActive.letter = 0;
 			} else {
-				// If the test started
+				// If the test testState
 				nextActive.letter++;
 				
 				// If have reached the final letter of current word
@@ -223,7 +254,7 @@ export default function App() {
 		<div id="App">
 			<div></div>
 			<div className="centerContent">
-				<div></div>
+				<div>{timeElapsed}</div>
 				<div className="typingTest">
 					<input 
 						ref={wordInput} 
