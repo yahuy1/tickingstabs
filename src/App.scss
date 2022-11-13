@@ -11,41 +11,47 @@ $error-color: #d70000;
   display: grid;
   grid-template-columns: auto minmax(0,1000px) auto;
 
-  .typingTest {
+  .centerContent {
     display: grid;
-    grid-template-rows: 1fr auto 1fr;
+    grid-template-rows: auto 0.9fr auto;
+    padding: 2rem;
 
-    .wordInput {
-      z-index: -1;
-    }
+    .typingTest {
+      display: grid;
+      grid-template-rows: 1fr auto 1fr;
 
-    .wordContainer {
-      background-color: $bg-color;
-      height: 117.562px;
-      font-size: 1.5rem;
-      
-      .word {
-        line-height: 1em;
-        font-variant: no-common-ligatures;
-        font-size: 1em;
-        display: inline-block;
-        margin: 0.25em;
-        color: $sub-color;
-        border-bottom: 2px solid transparent;
+      .wordInput {
+        z-index: -1;
+      }
 
-        &.error {
-          border-bottom: $error-color 2px solid;
-        }
-
-        .letter {
+      .wordContainer {
+        background-color: $bg-color;
+        height: 117.562px;
+        font-size: 1.5rem;
+        
+        .word {
+          line-height: 1em;
+          font-variant: no-common-ligatures;
+          font-size: 1em;
           display: inline-block;
-          
-          &.correct {
-            color: $main-color;
-          }
+          margin: 0.25em;
+          color: $sub-color;
+          border-bottom: 2px solid transparent;
 
           &.error {
-            color: $error-color;
+            border-bottom: $error-color 2px solid;
+          }
+
+          .letter {
+            display: inline-block;
+            
+            &.correct {
+              color: $main-color;
+            }
+
+            &.error {
+              color: $error-color;
+            }
           }
         }
       }

@@ -204,18 +204,22 @@ export default function App() {
 	return (
 		<div id="App">
 			<div></div>
-			<div className="typingTest" >
-				<input 
-					ref={wordInput} 
-					className="wordInput" 
-					autoFocus 
-					onBlur={() => {wordInput.current.focus();}} 
-					onKeyDown={handleModifierKeys}
-					onChange={handleCharacterInput}
-				/> 
-				<div className="wordContainer">
-					{words}
+			<div className="centerContent">
+				<div></div>
+				<div className="typingTest">
+					<input 
+						ref={wordInput} 
+						className="wordInput" 
+						autoFocus 
+						onBlur={() => {wordInput.current.focus();}} 
+						onKeyDown={handleModifierKeys}
+						onChange={handleCharacterInput}
+					/> 
+					<div className="wordContainer">
+						{words}
+					</div>
 				</div>
+				<div></div>
 			</div>
 			<div></div>
 		</div>
