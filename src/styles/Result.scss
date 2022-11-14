@@ -2,10 +2,18 @@
     text-align: center;
     font-size: 7em;
     outline: none;
-    animation: showup 2s ease;
+    animation: showup 2s ease forwards;
 
     @keyframes showup {
         0% {opacity: 0;}
-        100% {opacity: 1;};
+        100% {opacity: 1;}
+    }
+
+    @keyframes showup-infinity {
+        0% {opacity: 0;}
+        100% {
+            opacity: 1;
+            transform: translate(0px, -70vh);
+        }
     }
 }

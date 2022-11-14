@@ -13,6 +13,11 @@ export default function Result(props) {
             return;
         }
 
+        if (props.score === 0) {
+            setScoreCounter("Bruh");
+            return;
+        }
+
         let interval = setInterval(() => {
             setScoreCounter(prevState => {
                 if (prevState === props.score) {
@@ -26,7 +31,7 @@ export default function Result(props) {
     }, [])
 
     return (
-        <div className="result" tabIndex="0" ref={ref} onKeyDown={props.handleModifierKeys}>
+        <div className="result" tabIndex="0" ref={ref} onKeyDown={props.handleModifierKeys} style={(scoreCounter === "Bruh") ? {animation: "none"} : (scoreCounter === Infinity) ? {animation: "showup-infinity 3s ease forwards"} : {}}>
             {scoreCounter}
         </div>
     );
