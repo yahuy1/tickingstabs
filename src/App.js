@@ -1,4 +1,5 @@
 import "./App.scss";
+import Result from "./components/Result";
 import {useEffect, useRef, useState} from 'react';
 
 //const text = "If you're visiting this page, you're likely here because you're searching for a random sentence. Sometimes a random word just isn't enough, and that is where the random sentence generator comes into play. By inputting the desired number, you can make a list of as many random sentences as you want or need. Producing random sentences can be helpful in a number of different ways.";
@@ -12,6 +13,7 @@ export default function App() {
 	const [correctWords, setCorrectWords] = useState(0); // Number of correct words typed
 	const [timeElapsed, setTimeElapsed] = useState(0); // Time elapsed
 	const [WPM, setWPM] = useState(0); // WPM
+	const [page, setPage] = useState("typingTest");
 
 	// Generate Test Text
 	function generateTest(text) {
@@ -32,10 +34,10 @@ export default function App() {
 			)
 		}));
 		setIsActive({word: -1, letter: -1});
-		// Reset test state, prevent calling on mount
 		setCorrectWords(0);
-		setWPM(0);
-		if (testState !== null) setTestState("Not Started");
+		setWPM(0); 
+		setPage("typingTest");
+		if (testState !== null) setTestState("Not Started");  // Reset test state, prevent calling on mount
 	}
 	
 	// Call generateText() on load
@@ -47,10 +49,9 @@ export default function App() {
 		let finalCorrectWords = correctWords + (isCorrect === true);
 		let finalWPM = Math.round((finalCorrectWords / timeElapsed) * 60);
 
-		alert(finalWPM);
 		setWPM(finalWPM)
 		setCorrectWords(finalCorrectWords);
-		generateTest(text);
+		setPage("Result");
 	}
 
 	// Timer
@@ -283,24 +284,28 @@ export default function App() {
 				<div></div>
 				<div className="middleContainer">
 					<div></div>
-					<div className="typingTest">
-						<div className="stats">
-							<div>{Math.floor(timeElapsed)}</div>
-							<div>{WPM}</div>
+					{
+						(page === "typingTest") ?
+						<div className="typingTest" style={{display: ""}}>
+							<div className="stats" style={(testState === "Started") ? {} : {opacity: 0}}>
+								<div>{Math.floor(timeElapsed)}</div>
+								<div>{WPM}</div>
+							</div>
+							<div className="wordContainer">
+								<div className="caret"></div>
+								{words}
+							</div>
+							<input 
+								ref={wordInput} 
+								className="wordInput" 
+								autoFocus 
+								onBlur={() => {wordInput.current.focus();}} 
+								onKeyDown={handleModifierKeys}
+								onChange={handleCharacterInput}
+							/> 
 						</div>
-						<div className="wordContainer">
-							<div className="caret"></div>
-							{words}
-						</div>
-						<input 
-							ref={wordInput} 
-							className="wordInput" 
-							autoFocus 
-							onBlur={() => {wordInput.current.focus();}} 
-							onKeyDown={handleModifierKeys}
-							onChange={handleCharacterInput}
-						/> 
-					</div>
+						: <Result score={WPM} handleModifierKeys={handleModifierKeys}/>
+					}
 					<div></div>
 				</div>
 				<div></div>
