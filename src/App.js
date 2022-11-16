@@ -1,9 +1,7 @@
 import "./App.scss";
 import Result from "./components/Result";
+import language from "./components/languages/english.json";
 import {useEffect, useRef, useState} from 'react';
-
-//const text = "If you're visiting this page, you're likely here because you're searching for a random sentence. Sometimes a random word just isn't enough, and that is where the random sentence generator comes into play. By inputting the desired number, you can make a list of as many random sentences as you want or need. Producing random sentences can be helpful in a number of different ways.";
-const text = "another head into could govern do between seem much open so how at say to not life when he some public first seem point move high school into way other ask";
 
 export default function App() {
 	const wordInput = useRef(null); // Reference to the input field
@@ -16,7 +14,13 @@ export default function App() {
 	const [page, setPage] = useState("typingTest");
 
 	// Generate Test Text
-	function generateTest(text) {
+	function generateTest() {
+		let text = "";
+		for (let i = 0; i < 30; i++) {
+			let index = Math.floor(Math.random() * language.words.length);
+			text = text + language.words[index] + ((i === 29) ? "" : " ");
+		}
+
 		const wordList = text.split(" ");
 		setWords(wordList.map((word, i) => { 
 			return(
@@ -41,7 +45,9 @@ export default function App() {
 	}
 	
 	// Call generateText() on load
-	useEffect(() => {generateTest(text)}, []);
+	useEffect(() => {
+		generateTest();
+	}, []);
 
 	// Calculate Result
 	async function calculateResult() {
@@ -106,7 +112,7 @@ export default function App() {
 		// Tab
 		if (pressed === 9) {
 			event.preventDefault();
-			generateTest(text);
+			generateTest();
 		}
 
 		// Backspace
@@ -293,7 +299,7 @@ export default function App() {
 								<div>{WPM}</div>
 							</div>
 							<div className="wordContainer">
-								<div className="caret"></div>
+								<div className={"caret" + ((testState === "Started") ? " active" : " ")}></div>
 								{words}
 							</div>
 							<input 

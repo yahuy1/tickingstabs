@@ -59,6 +59,10 @@ $error-color: #d70000;
             }
 
             animation: flashSmooth ease infinite 1s;
+
+            &.active {
+              animation: none;
+            }
           }
 
           .word {
