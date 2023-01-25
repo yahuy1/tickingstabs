@@ -6,9 +6,14 @@ const cors = require("cors");
 
 const app = express();
 
+app.use(cors({ origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static("../frontend/build"));
+}
 
 const resultsRouter = require("./routes/results");
 app.use("/api/results", resultsRouter);

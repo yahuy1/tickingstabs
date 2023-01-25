@@ -5,6 +5,7 @@ import {useEffect, useRef, useState} from 'react';
 
 export default function App() {
 	const wordInput = useRef(null); // Reference to the input field
+	// const caret = useRef(null);
 	const [isActive, setIsActive] = useState({ word: 0, letter: -1}); // Word + Letter currently typing
 	const [words, setWords] = useState(null); // Test Text
 	const [testState, setTestState] = useState(null); // State of the test
@@ -47,6 +48,7 @@ export default function App() {
 	// Call generateText() on load
 	useEffect(() => {
 		generateTest();
+		// eslint-disable-next-line
 	}, []);
 
 	// Calculate Result
@@ -81,12 +83,14 @@ export default function App() {
 			clearInterval(interval);
 		};
 
+		// eslint-disable-next-line
 	}, [testState]);
 
 	useEffect(() => {
 		if (!Number.isInteger(timeElapsed) || timeElapsed === 0) return;
 		let newWPM = Math.round((correctWords / timeElapsed) * 60);
 		setWPM(newWPM);
+		// eslint-disable-next-line
 	}, [timeElapsed])
 
 	// Check for/Handle the end of the test
@@ -103,7 +107,15 @@ export default function App() {
 		}
 
 		setTestState("Finished");
+		// eslint-disable-next-line
 	}, [isActive]);
+
+	// function moveCaret() {
+	// 	let position = window.scrollX + document.getElementsByClassName("word")[0].getElementsByClassName("letter")[1].getBoundingClientRect().left;
+	// 	let position1 = window.scrollX + document.getElementById("caret").getBoundingClientRect().left;
+	// 	caret.current.style.left = (position - position1 + 5) + "px";
+	// 	console.log(position, position1);
+	// }
 
 	// Handle Modifier Keys      
 	function handleModifierKeys(event) {
@@ -299,7 +311,7 @@ export default function App() {
 								<div>{WPM}</div>
 							</div>
 							<div className="wordContainer">
-								<div className={"caret" + ((testState === "Started") ? " active" : " ")}></div>
+								{/* <div ref={caret} id="caret" className={((testState === "Started") ? "active" : "")}></div> */}
 								{words}
 							</div>
 							<input 
